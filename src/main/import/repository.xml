@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<content xmlns:j="http://www.jahia.org/jahia/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0">
+    <modules jcr:primaryType="jnt:modules">
+        <moderate-messages j:dependencies="default siteSettings"
+                           j:modulePriority="0"
+                           j:moduleType="module"
+                           j:title="Moderate Messages"
+                           jcr:mixinTypes="jmix:hasExternalProviderExtension"
+                           jcr:primaryType="jnt:module">
+
+            <portlets jcr:primaryType="jnt:portletFolder"/>
+            <files jcr:primaryType="jnt:folder"/>
+            <contents jcr:primaryType="jnt:contentFolder"/>
+            <templates j:rootTemplatePath="/base" jcr:primaryType="jnt:templatesFolder">
+                    <files jcr:primaryType="jnt:folder">
+                        <message_ok.png j:height="256"
+                               j:width="256"
+                               jcr:mixinTypes="jmix:image"
+                               jcr:primaryType="jnt:file">
+                            <jcr:content jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail2 jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                        </message_ok.png>
+                        <message_ok-resize16x16.png j:height="16"
+                                           j:width="16"
+                                           jcr:mixinTypes="jmix:image"
+                                           jcr:primaryType="jnt:file">
+                            <jcr:content jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail2 jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                        </message_ok-resize16x16.png>
+                    </files>
+                <contents jcr:primaryType="jnt:contentFolder"/>
+                <site-settings-base j:view="siteSettings"
+                                    jcr:mixinTypes="jmix:useUILocale"
+                                    jcr:primaryType="jnt:template">
+                        <moderate-messages j:applyOn="jnt:virtualsite"
+                                      j:defaultTemplate="false"
+                                      j:hiddenTemplate="false"
+                                 j:icon="/modules/moderate-messages/templates/files/message_ok-resize16x16.png"
+                                 jcr:primaryType="jnt:contentTemplate">
+                            <pagecontent jcr:primaryType="jnt:contentList">
+                                <moderate-messages jcr:primaryType="jnt:moderateMessages">
+                                    <j:translation_en jcr:language="en"
+                                          jcr:mixinTypes="mix:title"
+                                          jcr:primaryType="jnt:translation"
+                                          jcr:title="Moderate Messages"/>
+                                </moderate-messages>
+                            </pagecontent>
+                            <j:translation_en jcr:language="en"
+                                    jcr:mixinTypes="mix:title"
+                                    jcr:primaryType="jnt:translation"
+                                    jcr:title="Moderate Messages"/>
+                        </moderate-messages>
+                </site-settings-base>
+            </templates>
+
+        </moderate-messages>
+    </modules>
+</content>

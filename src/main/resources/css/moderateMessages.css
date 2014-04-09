@@ -1,0 +1,27 @@
+.collapse2.out{
+
+  display: none;
+}
+
+.collapse2.in{
+
+  display: block;
+}
+
+.noPostsToModerate {
+    background: #eee;
+    border-radius: 2em;
+    border: none;
+    margin: 2em;
+    padding: 0.8em;
+
+    color: #000;
+    font-size: 1.1em;
+    padding-left: 1.5em;
+
+    outline: none;
+    box-shadow: 0 4px 6px -5px hsl(0, 0%, 40%), inset 0px 4px 6px -5px hsl(0, 0%, 2%)
+}
+
+
+
