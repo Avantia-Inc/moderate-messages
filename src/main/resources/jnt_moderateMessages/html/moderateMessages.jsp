@@ -20,17 +20,30 @@
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
 <template:addResources type="css" resources="moderateMessages.css" />
-<template:addResources type="javascript" resources="jquery.min.js,jquery-ui.min.js,jquery.blockUI.js,workInProgress.js,admin-bootstrap.js,jquery.dataTables.min.js" />
-<template:addResources type="css" resources="admin-bootstrap.css,bootstrap.min.css" />
+<template:addResources type="javascript" resources="jquery.min.js,jquery-ui.min.js,jquery.blockUI.js,workInProgress.js,admin-bootstrap.js,jquery.dataTables.min.js,dt_bootstrap.js" />
+<template:addResources type="css" resources="admin-bootstrap.css,bootstrap.min.css,dt_bootstrap.css" />
 <template:addResources type="css" resources="jquery-ui.smoothness.css,jquery-ui.smoothness-jahia.css" />
 
 <script>
+
 $(document).ready(function() {
-    $('#forumMessagesTable').dataTable();
-    $('#blogPostTable').dataTable();
-    $('#commentPostTable').dataTable();
+  $('#forumMessagesTable').dataTable({
+  "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+  "sPaginationType": "bootstrap",
+  "iDisplayLength": 5});
+    $('#blogPostTable').dataTable({
+  "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+  "sPaginationType": "bootstrap",
+                                  "iDisplayLength": 5});
+    $('#commentPostTable').dataTable({
+  "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+  "sPaginationType": "bootstrap",
+                                  "iDisplayLength": 5});
 
 } );
+
+  
+
 </script>
 
 <c:set var="site" value="${renderContext.mainResource.node.resolveSite}"/>
@@ -42,7 +55,7 @@ $(document).ready(function() {
 
     <c:choose>
     	<c:when test="${not empty forumPostlist}">
-        <div class="container">
+
         <table id="forumMessagesTable" class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
@@ -67,61 +80,10 @@ $(document).ready(function() {
               	<jcr:nodeProperty node="${forumPost}" name="jcr:createdBy" var="createdBy" />
                 <jcr:nodeProperty node="${forumPost}" name="content" var="content" />
 
-              	<c:if test="${jcr:hasPermission(forumPost, 'deletePost') and jcr:isNodeType(forumPost, 'jmix:moderated') and not forumPost.properties.moderated.boolean}">
-              		<template:tokenizedForm>
-              			<form
-              				action="<c:url value='${url.baseLive}${forumPost.path}'/>"
-              				method="post" id="jahia-forum-post-delete-${forumPost.UUID}">
-              				<input type="hidden" name="jcrRedirectTo"
-              					value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>" />
-              				<%-- Define the output format for the newly created node by default html or by redirectTo--%>
-              				<input type="hidden" name="jcrNewNodeOutputFormat" value="" />
-              				<input type="hidden" name="jcrMethodToCall" value="delete" />
-              			</form>
-              		</template:tokenizedForm>
-              	</c:if>
+
 
               	<c:if test="${jcr:hasPermission(forumPost.parent.parent, 'moderatePost') and jcr:isNodeType(forumPost, 'jmix:moderated') and not forumPost.properties.moderated.boolean}">
-              		<template:tokenizedForm>
-              			<form
-              				action="<c:url value='${url.baseLive}${forumPost.path}'/>"
-              				method="post"
-              				id="jahia-forum-post-moderate-${forumPost.UUID}">
-              				<input type="hidden" name="jcrRedirectTo"
-              					value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>" />
-              				<%-- Define the output format for the newly created node by default html or by redirectTo--%>
-              				<input type="hidden" name="jcrNewNodeOutputFormat" value="" />
-              				<input type="hidden" name="jcrMethodToCall" value="put" />
-              				<input type="hidden" name="moderated" value="true" />
-              			</form>
-              		</template:tokenizedForm>
-              	</c:if>
-
-              	<c:if test="${jcr:hasPermission(forumPost.parent.parent, 'moderatePost') and jcr:isNodeType(forumPost, 'jmix:moderated') and not forumPost.properties.moderated.boolean}">
-              	    <script>
-                          $(window)
-                            .load(function () {
-                              $(".btn-${forumPost.UUID}")
-                                .click(function () {
-                                  if ($("#collapseme-${forumPost.UUID}")
-                                    .hasClass("out")) {
-                                    $("#collapseme-${forumPost.UUID}")
-                                      .addClass("in");
-                                    $("#collapseme-${forumPost.UUID}")
-                                      .removeClass("out");
-                                    $('.btn-${forumPost.UUID} span')
-                                      .text('<fmt:message key="moderateMessages.closePost"/>');
-                                  } else {
-                                    $("#collapseme-${forumPost.UUID}")
-                                      .addClass("out");
-                                    $("#collapseme-${forumPost.UUID}")
-                                      .removeClass("in");
-                                    $('.btn-${forumPost.UUID} span')
-                                      .text('<fmt:message key="moderateMessages.viewPost"/>');
-                                  }
-                                });
-                            });
-                      </script>
+              	   
               		<tr>
 
               			<td><c:set var="count" value="${count + 1}" scope="page" />
@@ -168,13 +130,42 @@ $(document).ready(function() {
               					</c:if>
               			    </span>
               			</td>
-              			<td>
+              			 <template:tokenizedForm>
+                            <form
+                                action="<c:url value='${url.baseLive}${forumPost.path}'/>"
+                                method="post"
+                                id="jahia-forum-post-moderate-${forumPost.UUID}">
+                                <input type="hidden" name="jcrRedirectTo"
+                                    value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>" />
+                                <%-- Define the output format for the newly created node by default html or by redirectTo--%>
+                                <input type="hidden" name="jcrNewNodeOutputFormat" value="" />
+                                <input type="hidden" name="jcrMethodToCall" value="put" />
+                                <input type="hidden" name="moderated" value="true" />
+                            </form>
+                            </template:tokenizedForm>
+                                <template:tokenizedForm>
+                                    <form
+                                        action="<c:url value='${url.baseLive}${forumPost.path}'/>"
+                                        method="post" id="jahia-forum-post-delete-${forumPost.UUID}">
+                                        <input type="hidden" name="jcrRedirectTo"
+                                            value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>" />
+                                        <%-- Define the output format for the newly created node by default html or by redirectTo--%>
+                                        <input type="hidden" name="jcrNewNodeOutputFormat" value="" />
+                                        <input type="hidden" name="jcrMethodToCall" value="delete" />
+                                    </form>
+                            </template:tokenizedForm>
+                          <td>
+
               			    <c:if test="${jcr:hasPermission(forumPost.parent.parent, 'moderatePost') and jcr:isNodeType(forumPost, 'jmix:moderated') and not forumPost.properties.moderated.boolean}">
+
               					<button type="button" class="btn btn-success"
               						onclick="document.getElementById('jahia-forum-post-moderate-${forumPost.UUID}').submit(); return false;">
               						<i class="icon-ok icon-white"></i><fmt:message key='moderateMessages.moderatePost' />
               					</button>
-              				</c:if> <c:if test="${jcr:hasPermission(forumPost, 'deletePost')}">
+              				</c:if>
+
+              				<c:if test="${jcr:hasPermission(forumPost, 'deletePost')}">
+
               					<fmt:message key="moderateMessages.confirmDeletePost" var="confirmMsg" />
               					<button type="button" class="btn btn-danger"
               						onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
@@ -187,7 +178,8 @@ $(document).ready(function() {
               					class="btn btn-primary btn-${forumPost.UUID}"
               					id="btn-${forumPost.UUID}" data-toggle="modal" data-target="#${forumPost.UUID}">
                                 <i class="icon-info-sign icon-white"></i><span><fmt:message key="moderateMessages.viewPost" /></span>
-              				</button></td>
+              				</button>
+              			</td>
 
               		</tr>
                   <!-- Button trigger modal -->
@@ -208,6 +200,15 @@ $(document).ready(function() {
                            ${functions:removeHtmlTags(content.string)}
                           </div>
                           <div class="modal-footer">
+                            <button type="button" class="btn btn-success"
+                                onclick="document.getElementById('jahia-forum-post-moderate-${forumPost.UUID}').submit(); return false;">
+                                <i class="icon-ok icon-white"></i><fmt:message key='moderateMessages.moderatePost' />
+                            </button>
+                            <button type="button" class="btn btn-danger"
+                                onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
+                                    { document.getElementById("jahia-forum-post-delete-${forumPost.UUID}").submit(); } return false;'>
+                                <i class="icon-remove icon-white"></i><fmt:message key='moderateMessages.deletePost' />
+                            </button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                            
                           </div>
@@ -221,7 +222,6 @@ $(document).ready(function() {
             </c:forEach>
             </tbody>
         </table>
-        </div>
         	</c:when>
         	<c:otherwise>
         		<h3 class="noPostsToModerate">
@@ -261,32 +261,7 @@ $(document).ready(function() {
                       	<jcr:nodeProperty node="${commentPost}" name="jcr:createdBy" var="createdBy" />
                         <jcr:nodeProperty node="${commentPost}" name="content" var="content" />
 
-                      <script>
-                          $(window)
-                            .load(function () {
-                              $(".btn-${commentPost.UUID}")
-                                .click(function () {
-                                  if ($("#collapseme-${commentPost.UUID}")
-                                    .hasClass("out")) {
-                                    $("#collapseme-${commentPost.UUID}")
-                                      .addClass("in");
-                                    $("#collapseme-${commentPost.UUID}")
-                                      .removeClass("out");
-                                    $('.btn-${commentPost.UUID} span')
-                                      .text('<fmt:message key="moderateMessages.closePost"/>');
-                                  } else {
-                                    $("#collapseme-${commentPost.UUID}")
-                                      .addClass("out");
-                                    $("#collapseme-${commentPost.UUID}")
-                                      .removeClass("in");
-                                    $('.btn-${commentPost.UUID} span')
-                                      .text('<fmt:message key="moderateMessages.viewPost"/>');
-                                  }
-                                });
-                            });
-                      </script>
-
-
+                   
 
                       		<template:tokenizedForm>
                       			<form
@@ -435,49 +410,11 @@ $(document).ready(function() {
                               	<jcr:nodeProperty node="${blogPost}" name="jcr:createdBy" var="createdBy" />
                                 <jcr:nodeProperty node="${blogPost}" name="content" var="content" />
 
-                              <script>
-                                  $(window)
-                                    .load(function () {
-                                      $(".btn-${blogPost.UUID}")
-                                        .click(function () {
-                                          if ($("#collapseme-${blogPost.UUID}")
-                                            .hasClass("out")) {
-                                            $("#collapseme-${blogPost.UUID}")
-                                              .addClass("in");
-                                            $("#collapseme-${blogPost.UUID}")
-                                              .removeClass("out");
-                                            $('.btn-${blogPost.UUID} span')
-                                              .text('<fmt:message key="moderateMessages.closePost"/>');
-                                          } else {
-                                            $("#collapseme-${blogPost.UUID}")
-                                              .addClass("out");
-                                            $("#collapseme-${blogPost.UUID}")
-                                              .removeClass("in");
-                                            $('.btn-${blogPost.UUID} span')
-                                              .text('<fmt:message key="moderateMessages.viewPost"/>');
-                                          }
-                                        });
-                                    });
-                              </script>
-
-
-
-                              		<template:tokenizedForm>
-                              			<form
-                              				action="<c:url value='${url.baseLive}${blogPost.path}'/>"
-                              				method="post" id="jahia-forum-post-delete-${blogPost.UUID}">
-                              				<input type="hidden" name="jcrRedirectTo"
-                              					value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>" />
-                              				<%-- Define the output format for the newly created node by default html or by redirectTo--%>
-                              				<input type="hidden" name="jcrNewNodeOutputFormat" value="" />
-                              				<input type="hidden" name="jcrMethodToCall" value="delete" />
-                              			</form>
-                              		</template:tokenizedForm>
-
                               		<tr>
 
                               			<td><c:set var="count" value="${count + 1}" scope="page" />
-                              				<c:out value="${count}" /></td>
+                              				<c:out value="${count}" />
+                                        </td>
                               			<td><a
                               				href="${url.baseLive}${blogPost.parent.parent.path}.html"
                               				target="_blank"
@@ -518,10 +455,21 @@ $(document).ready(function() {
                               			</span></td>
                               			<td>
                               			    <c:if test="${jcr:hasPermission(blogPost, 'deletePost')}">
+                              			        <template:tokenizedForm>
+                                                    <form
+                                                        action="<c:url value='${url.baseLive}${blogPost.path}'/>"
+                                                        method="post" id="jahia-forum-post-delete-${blogPost.UUID}">
+                                                        <input type="hidden" name="jcrRedirectTo"
+                                                            value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>" />
+                                                        <%-- Define the output format for the newly created node by default html or by redirectTo--%>
+                                                        <input type="hidden" name="jcrNewNodeOutputFormat" value="" />
+                                                        <input type="hidden" name="jcrMethodToCall" value="delete" />
+                                                    </form>
+                                                </template:tokenizedForm>
                               					<fmt:message key="moderateMessages.confirmDeletePost" var="confirmMsg" />
                               					<button type="button" class="btn btn-danger"
                               						onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
-                              { document.getElementById("jahia-forum-post-delete-${blogPost.UUID}").submit(); } return false;'>
+                                                        { document.getElementById("jahia-forum-post-delete-${blogPost.UUID}").submit(); } return false;'>
                                                     <i class="icon-remove icon-white"></i><fmt:message key='moderateMessages.deletePost' />
 
                               					</button>
@@ -549,6 +497,12 @@ $(document).ready(function() {
                            ${functions:removeHtmlTags(content.string)}
                           </div>
                           <div class="modal-footer">
+                            <button type="button" class="btn btn-danger"
+                             onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
+                             { document.getElementById("jahia-forum-post-delete-${blogPost.UUID}").submit(); } return false;'>
+                             <i class="icon-remove icon-white"></i><fmt:message key='moderateMessages.deletePost' />
+
+                            </button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                            
                           </div>
