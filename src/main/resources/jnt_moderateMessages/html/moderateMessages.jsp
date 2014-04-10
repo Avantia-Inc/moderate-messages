@@ -306,6 +306,7 @@ $(document).ready(function() {
                                                         <c:set var="title" value="${property.string}" />
 
                                                     </c:if>
+                                                    <jcr:nodeProperty var="picture" node="${userNode}" name="j:picture"/>
                                                 </c:forEach>
                                                 <br />
                                                 <i>(${firstname}<br/>${lastname})</i>
@@ -350,6 +351,10 @@ $(document).ready(function() {
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                              <h3 class="modal-title" id="myModalLabel">${commentTitle.string} </h3> <i>(<fmt:message key="moderateMessages.table.postby" />&nbsp;${firstname}&nbsp;${lastname})</i>
+                            <c:if test="${not empty picture}">
+                                                                  <img align="right" class='user-profile-img userProfileImage' src="${picture.node.thumbnailUrls['avatar_120']}" alt="${fn:escapeXml(title)} ${fn:escapeXml(firstname)} ${fn:escapeXml(lastname)}" width="60"
+                                                                         height="60"/>
+                                                                </c:if>
                             <h4 class="modal-title" id="myModalLabel">
                               Blog: <c:out value="${sectionTitle.string}" />
                              </h4>
@@ -450,6 +455,7 @@ $(document).ready(function() {
                                                     <c:set var="title" value="${property.string}" />
 
                                                 </c:if>
+                                                <jcr:nodeProperty var="picture" node="${userNode}" name="j:picture"/>
                                             </c:forEach>
                                             <br />
                                             <i>(${firstname}<br/>${lastname})</i>
@@ -496,6 +502,10 @@ $(document).ready(function() {
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                              <h3 class="modal-title" id="myModalLabel">${commentTitle.string} </h3> <i>(<fmt:message key="moderateMessages.table.postby" />&nbsp;${firstname}&nbsp;${lastname})</i>
+                            <c:if test="${not empty picture}">
+                                                                  <img align="right" class='user-profile-img userProfileImage' src="${picture.node.thumbnailUrls['avatar_120']}" alt="${fn:escapeXml(title)} ${fn:escapeXml(firstname)} ${fn:escapeXml(lastname)}" width="60"
+                                                                         height="60"/>
+                                                                </c:if>
                             <h4 class="modal-title" id="myModalLabel">
                               Page: <c:out value="${sectionTitle.string}" />	
                              </h4>
