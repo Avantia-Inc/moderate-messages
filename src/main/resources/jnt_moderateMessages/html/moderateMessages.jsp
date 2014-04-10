@@ -20,10 +20,18 @@
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
 <template:addResources type="css" resources="moderateMessages.css" />
-<template:addResources type="javascript" resources="jquery.min.js,jquery-ui.min.js,jquery.blockUI.js,workInProgress.js,admin-bootstrap.js" />
+<template:addResources type="javascript" resources="jquery.min.js,jquery-ui.min.js,jquery.blockUI.js,workInProgress.js,admin-bootstrap.js,jquery.dataTables.min.js" />
 <template:addResources type="css" resources="admin-bootstrap.css,bootstrap.min.css" />
 <template:addResources type="css" resources="jquery-ui.smoothness.css,jquery-ui.smoothness-jahia.css" />
 
+<script>
+$(document).ready(function() {
+    $('#forumMessagesTable').dataTable();
+    $('#blogPostTable').dataTable();
+    $('#commentPostTable').dataTable();
+
+} );
+</script>
 
 <c:set var="site" value="${renderContext.mainResource.node.resolveSite}"/>
 
@@ -35,7 +43,7 @@
     <c:choose>
     	<c:when test="${not empty forumPostlist}">
         <div class="container">
-        <table id="forumMessagesTable" class="table table-bordered table-striped table-hover dataTable">
+        <table id="forumMessagesTable" class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
                     <th width="3%">#</th>
@@ -177,15 +185,37 @@
 
               				<button type="button"
               					class="btn btn-primary btn-${forumPost.UUID}"
-              					id="btn-${forumPost.UUID}" valign="middle" align="center">
+              					id="btn-${forumPost.UUID}" data-toggle="modal" data-target="#${forumPost.UUID}">
                                 <i class="icon-info-sign icon-white"></i><span><fmt:message key="moderateMessages.viewPost" /></span>
               				</button></td>
 
               		</tr>
-              		<tr>
-              			<td colspan="5"><div id="collapseme-${forumPost.UUID}"
-              					class="collapse2 out">${functions:removeHtmlTags(content.string)}</div></td>
-              		</tr>
+                  <!-- Button trigger modal -->
+               
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="${forumPost.UUID}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                             <h3 class="modal-title" id="myModalLabel">${commentTitle.string} </h3> <i>(<fmt:message key="moderateMessages.table.postby" />&nbsp;${firstname}&nbsp;${lastname})</i>
+                            <h4 class="modal-title" id="myModalLabel">
+                              Section: <c:out value="${sectionTitle.string}" /> <br/>
+                              Topic: <c:out value="${topicSubject.string}" /></h4>
+                          </div>
+                          <div class="modal-body">
+                           ${functions:removeHtmlTags(content.string)}
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                           
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                 
+              
               	</c:if>
               </c:if>
             </c:forEach>
@@ -206,7 +236,7 @@
             <h3><fmt:message key="siteSettings.label.moderateCommentMessages"/></h3>
                 <c:choose>
                 	<c:when test="${not empty CommentPostlist}">
-                <table class="table table-bordered table-striped table-hover">
+                <table id="commentPostTable" class="table table-bordered table-striped table-hover">
                     <thead>
                         <tr>
                             <th width="3%">#</th>
@@ -330,16 +360,33 @@
 
                       				<button type="button"
                       					class="btn btn-primary btn-${commentPost.UUID}"
-                      					id="btn-${commentPost.UUID}" valign="middle" align="center">
+                      					id="btn-${commentPost.UUID}" data-toggle="modal" data-target="#${commentPost.UUID}">
                                         <i class="icon-info-sign icon-white"></i><span><fmt:message key="moderateMessages.viewPost" /></span>
 
                       				</button></td>
 
                       		</tr>
-                      		<tr>
-                      			<td colspan="5"><div id="collapseme-${commentPost.UUID}"
-                      					class="collapse2 out">${functions:removeHtmlTags(content.string)}</div></td>
-                      		</tr>
+                        <div class="modal fade" id="${commentPost.UUID}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                             <h3 class="modal-title" id="myModalLabel">${commentTitle.string} </h3> <i>(<fmt:message key="moderateMessages.table.postby" />&nbsp;${firstname}&nbsp;${lastname})</i>
+                            <h4 class="modal-title" id="myModalLabel">
+                              Page: <c:out value="${sectionTitle.string}" />	
+                             </h4>
+                          </div>
+                          <div class="modal-body">
+                           ${functions:removeHtmlTags(content.string)}
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                           
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                      		
 
                       </c:if>
 
@@ -363,7 +410,7 @@
                     <h3><fmt:message key="siteSettings.label.moderateBlogMessages"/></h3>
                     <c:choose>
                         <c:when test="${not empty blogPostlist}">
-                        <table class="table table-bordered table-striped table-hover">
+                        <table id="blogPostTable" class="table table-bordered table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th width="3%">#</th>
@@ -482,16 +529,33 @@
 
                               				<button type="button"
                               					class="btn btn-primary btn-${blogPost.UUID}"
-                              					id="btn-${blogPost.UUID}" valign="middle" align="center">
+                              					id="btn-${blogPost.UUID}" data-toggle="modal" data-target="#${blogPost.UUID}">
                                                 <i class="icon-info-sign icon-white"></i><span><fmt:message key="moderateMessages.viewPost" /></span>
 
                               				</button></td>
 
                               		</tr>
-                              		<tr>
-                              			<td colspan="5"><div id="collapseme-${blogPost.UUID}"
-                              					class="collapse2 out">${functions:removeHtmlTags(content.string)}</div></td>
-                              		</tr>
+                                <div class="modal fade" id="${blogPost.UUID}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                             <h3 class="modal-title" id="myModalLabel">${commentTitle.string} </h3> <i>(<fmt:message key="moderateMessages.table.postby" />&nbsp;${firstname}&nbsp;${lastname})</i>
+                            <h4 class="modal-title" id="myModalLabel">
+                              Blog: <c:out value="${sectionTitle.string}" />	
+                             </h4>
+                          </div>
+                          <div class="modal-body">
+                           ${functions:removeHtmlTags(content.string)}
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                           
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                              		
 
                               </c:if>
                             </c:forEach>
