@@ -46,7 +46,7 @@ public class messagesList extends AbstractFilter {
         final List<JCRNodeWrapper> CommentPostlist = new ArrayList<JCRNodeWrapper>();
         final List<JCRNodeWrapper> blogPostlist = new ArrayList<JCRNodeWrapper>();
 
-        logger.info("********** hello *******************************");
+        logger.info("Query site "+sitePath+" to retrieve all posts");
         try {
             QueryManager qm = getSession().getWorkspace().getQueryManager();
             StringBuilder statement = new StringBuilder("select * from [jnt:post] as post where ISDESCENDANTNODE(post,'" + sitePath + "')  order by post.['jcr:created'] desc");
