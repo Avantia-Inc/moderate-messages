@@ -31,14 +31,15 @@ $(document).ready(function() {
   "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
   "sPaginationType": "bootstrap",
   "iDisplayLength": 5});
-    $('#blogPostTable').dataTable({
-  "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-  "sPaginationType": "bootstrap",
-                                  "iDisplayLength": 5});
+
     $('#commentPostTable').dataTable({
   "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
   "sPaginationType": "bootstrap",
                                   "iDisplayLength": 5});
+   $('#blogPostTable').dataTable({
+     "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+     "sPaginationType": "bootstrap",
+                                     "iDisplayLength": 5});
 
 } );
 
@@ -119,6 +120,10 @@ $(document).ready(function() {
                                             <c:if test="${property.name == 'j:title'}">
                                                 <c:set var="title" value="${property.string}" />
                                             </c:if>
+
+                                                 <jcr:nodeProperty var="picture" node="${userNode}" name="j:picture"/>
+
+
                                         </c:forEach>
                                         <br />
                                         <i>(${firstname}<br/>${lastname})</i>
@@ -192,6 +197,10 @@ $(document).ready(function() {
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                              <h3 class="modal-title" id="myModalLabel">${commentTitle.string} </h3> <i>(<fmt:message key="moderateMessages.table.postby" />&nbsp;${firstname}&nbsp;${lastname})</i>
+                            <c:if test="${not empty picture}">
+                                      <img align="right" class='user-profile-img userProfileImage' src="${picture.node.thumbnailUrls['avatar_120']}" alt="${fn:escapeXml(title)} ${fn:escapeXml(firstname)} ${fn:escapeXml(lastname)}" width="60"
+                                             height="60"/>
+                                    </c:if>
                             <h4 class="modal-title" id="myModalLabel">
                               Section: <c:out value="${sectionTitle.string}" /> <br/>
                               Topic: <c:out value="${topicSubject.string}" /></h4>
@@ -230,6 +239,152 @@ $(document).ready(function() {
         	</c:otherwise>
         </c:choose>
     </div>
+
+
+            <c:set var="count" value="0" scope="page" />
+                <div class="box-1">
+                    <h3><fmt:message key="siteSettings.label.moderateBlogMessages"/></h3>
+                    <c:choose>
+                        <c:when test="${not empty blogPostlist}">
+                        <table id="blogPostTable" class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="3%">#</th>
+                                    <th width="45%"><fmt:message key="moderateMessages.table.post" /></th>
+                                    <th width="10%"><fmt:message key="moderateMessages.table.postdate" /></th>
+                                    <th width="8%"><fmt:message key="moderateMessages.table.postby" /></th>
+                                    <th width="34%"><fmt:message key="moderateMessages.table.postactions" /></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            <c:forEach items="${blogPostlist}" var="blogPost" varStatus="status">
+
+
+                              <template:addCacheDependency node="${blogPost}" />
+
+                              <c:if test="${jcr:isNodeType(blogPost, 'jnt:post') && jcr:hasPermission(blogPost, 'deletePost')}">
+
+                               	<jcr:nodeProperty node="${blogPost}" name="jcr:title" var="commentTitle" />
+                              	<jcr:nodeProperty node="${blogPost.parent}" name="topicSubject" var="topicSubject" />
+                              	<jcr:nodeProperty node="${blogPost.parent.parent}" name="jcr:title" var="sectionTitle" />
+                              	<jcr:nodeProperty node="${blogPost}" name="jcr:createdBy" var="createdBy" />
+                                <jcr:nodeProperty node="${blogPost}" name="content" var="content" />
+
+                              		<tr>
+
+                              			<td><c:set var="count" value="${count + 1}" scope="page" />
+                              				<c:out value="${count}" />
+                                        </td>
+                              			<td><a
+                              				href="${url.baseLive}${blogPost.parent.parent.path}.html"
+                              				target="_blank"
+                              				title='<fmt:message key=" label.navigateTo "/>'> <c:out
+                              						value="${commentTitle.string}" />
+                              			</a> <br /> <i>Blog: <c:out
+                              						value="${sectionTitle.string}" /></i> <br /></td>
+                              			<jcr:nodeProperty node="${blogPost}" name="jcr:lastModified"
+                              				var="lastModified" />
+                              			<td><span class="docspacedate timestamp"><fmt:formatDate
+                              						value="${lastModified.time}" pattern="yyyy/MM/dd HH:mm" /></span>
+                              			</td>
+                              			<td><span class="author">
+                              			    <c:if test="${createdBy.string ne 'guest'}">
+                              					<a href="<c:url value='${url.base}${functions:lookupUser(createdBy.string).localPath}.html'/>">${createdBy.string}</a>
+                              					<jcr:node var="userNode" path="${functions:lookupUser(createdBy.string).localPath}" />
+                                                <c:forEach items="${userNode.properties}" var="property">
+                                                    <c:if test="${property.name == 'j:firstName'}">
+                                                        <c:set var="firstname" value="${property.string}" />
+                                                    </c:if>
+                                                    <c:if test="${property.name == 'j:lastName'}">
+                                                        <c:set var="lastname" value="${property.string}" />
+                                                    </c:if>
+                                                    <c:if test="${property.name == 'j:email'}">
+                                                        <c:set var="email" value="${property.string}" />
+                                                    </c:if>
+                                                    <c:if test="${property.name == 'j:title'}">
+                                                        <c:set var="title" value="${property.string}" />
+
+                                                    </c:if>
+                                                </c:forEach>
+                                                <br />
+                                                <i>(${firstname}<br/>${lastname})</i>
+                              				</c:if>
+                              				<c:if test="${createdBy.string eq 'guest'}">
+                              				    ${fn:escapeXml(blogPost.properties.pseudo.string)}
+                              				</c:if>
+                              			</span></td>
+                              			<td>
+                              			    <c:if test="${jcr:hasPermission(blogPost, 'deletePost')}">
+                              			        <template:tokenizedForm>
+                                                    <form
+                                                        action="<c:url value='${url.baseLive}${blogPost.path}'/>"
+                                                        method="post" id="jahia-forum-post-delete-${blogPost.UUID}">
+                                                        <input type="hidden" name="jcrRedirectTo"
+                                                            value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>" />
+                                                        <%-- Define the output format for the newly created node by default html or by redirectTo--%>
+                                                        <input type="hidden" name="jcrNewNodeOutputFormat" value="" />
+                                                        <input type="hidden" name="jcrMethodToCall" value="delete" />
+                                                    </form>
+                                                </template:tokenizedForm>
+                              					<fmt:message key="moderateMessages.confirmDeletePost" var="confirmMsg" />
+                              					<button type="button" class="btn btn-danger"
+                              						onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
+                                                        { document.getElementById("jahia-forum-post-delete-${blogPost.UUID}").submit(); } return false;'>
+                                                    <i class="icon-remove icon-white"></i><fmt:message key='moderateMessages.deletePost' />
+
+                              					</button>
+                              				</c:if>
+
+                              				<button type="button"
+                              					class="btn btn-primary btn-${blogPost.UUID}"
+                              					id="btn-${blogPost.UUID}" data-toggle="modal" data-target="#${blogPost.UUID}">
+                                                <i class="icon-info-sign icon-white"></i><span><fmt:message key="moderateMessages.viewPost" /></span>
+
+                              				</button></td>
+
+                              		</tr>
+                                <div class="modal fade" id="${blogPost.UUID}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                             <h3 class="modal-title" id="myModalLabel">${commentTitle.string} </h3> <i>(<fmt:message key="moderateMessages.table.postby" />&nbsp;${firstname}&nbsp;${lastname})</i>
+                            <h4 class="modal-title" id="myModalLabel">
+                              Blog: <c:out value="${sectionTitle.string}" />
+                             </h4>
+                          </div>
+                          <div class="modal-body">
+                           ${functions:removeHtmlTags(content.string)}
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger"
+                             onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
+                             { document.getElementById("jahia-forum-post-delete-${blogPost.UUID}").submit(); } return false;'>
+                             <i class="icon-remove icon-white"></i><fmt:message key='moderateMessages.deletePost' />
+
+                            </button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+              </c:if>
+            </c:forEach>
+            </tbody>
+        </table>
+            </c:when>
+            <c:otherwise>
+                <h3 class="noPostsToModerate">
+                    <fmt:message key="moderateMessages.noPostToModerate" />
+                </h3>
+            </c:otherwise>
+         </c:choose>
+     </div>
+
 
          <c:set var="count" value="0" scope="page" />
         <div class="box-1">
@@ -364,14 +519,9 @@ $(document).ready(function() {
                         </div>
                       </div>
                     </div>
-                      		
-
                       </c:if>
 
-
-
                     </c:forEach>
-
                     </tbody>
                 </table>
                 	</c:when>
@@ -383,146 +533,5 @@ $(document).ready(function() {
                 </c:choose>
              </div>
 
-            <c:set var="count" value="0" scope="page" />
-                <div class="box-1">
-                    <h3><fmt:message key="siteSettings.label.moderateBlogMessages"/></h3>
-                    <c:choose>
-                        <c:when test="${not empty blogPostlist}">
-                        <table id="blogPostTable" class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th width="3%">#</th>
-                                    <th width="45%"><fmt:message key="moderateMessages.table.post" /></th>
-                                    <th width="10%"><fmt:message key="moderateMessages.table.postdate" /></th>
-                                    <th width="8%"><fmt:message key="moderateMessages.table.postby" /></th>
-                                    <th width="34%"><fmt:message key="moderateMessages.table.postactions" /></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            <c:forEach items="${blogPostlist}" var="blogPost" varStatus="status">
 
 
-                              <template:addCacheDependency node="${blogPost}" />
-
-                              <c:if test="${jcr:isNodeType(blogPost, 'jnt:post') && jcr:hasPermission(blogPost, 'deletePost')}">
-
-                               	<jcr:nodeProperty node="${blogPost}" name="jcr:title" var="commentTitle" />
-                              	<jcr:nodeProperty node="${blogPost.parent}" name="topicSubject" var="topicSubject" />
-                              	<jcr:nodeProperty node="${blogPost.parent.parent}" name="jcr:title" var="sectionTitle" />
-                              	<jcr:nodeProperty node="${blogPost}" name="jcr:createdBy" var="createdBy" />
-                                <jcr:nodeProperty node="${blogPost}" name="content" var="content" />
-
-                              		<tr>
-
-                              			<td><c:set var="count" value="${count + 1}" scope="page" />
-                              				<c:out value="${count}" />
-                                        </td>
-                              			<td><a
-                              				href="${url.baseLive}${blogPost.parent.parent.path}.html"
-                              				target="_blank"
-                              				title='<fmt:message key=" label.navigateTo "/>'> <c:out
-                              						value="${commentTitle.string}" />
-                              			</a> <br /> <i>Blog: <c:out
-                              						value="${sectionTitle.string}" /></i> <br /></td>
-                              			<jcr:nodeProperty node="${blogPost}" name="jcr:lastModified"
-                              				var="lastModified" />
-                              			<td><span class="docspacedate timestamp"><fmt:formatDate
-                              						value="${lastModified.time}" pattern="yyyy/MM/dd HH:mm" /></span>
-                              			</td>
-                              			<td><span class="author">
-                              			    <c:if test="${createdBy.string ne 'guest'}">
-                              					<a href="<c:url value='${url.base}${functions:lookupUser(createdBy.string).localPath}.html'/>">${createdBy.string}</a>
-                              					<jcr:node var="userNode" path="${functions:lookupUser(createdBy.string).localPath}" />
-                                                <c:forEach items="${userNode.properties}" var="property">
-                                                    <c:if test="${property.name == 'j:firstName'}">
-                                                        <c:set var="firstname" value="${property.string}" />
-                                                    </c:if>
-                                                    <c:if test="${property.name == 'j:lastName'}">
-                                                        <c:set var="lastname" value="${property.string}" />
-                                                    </c:if>
-                                                    <c:if test="${property.name == 'j:email'}">
-                                                        <c:set var="email" value="${property.string}" />
-                                                    </c:if>
-                                                    <c:if test="${property.name == 'j:title'}">
-                                                        <c:set var="title" value="${property.string}" />
-
-                                                    </c:if>
-                                                </c:forEach>
-                                                <br />
-                                                <i>(${firstname}<br/>${lastname})</i>
-                              				</c:if>
-                              				<c:if test="${createdBy.string eq 'guest'}">
-                              				    ${fn:escapeXml(blogPost.properties.pseudo.string)}
-                              				</c:if>
-                              			</span></td>
-                              			<td>
-                              			    <c:if test="${jcr:hasPermission(blogPost, 'deletePost')}">
-                              			        <template:tokenizedForm>
-                                                    <form
-                                                        action="<c:url value='${url.baseLive}${blogPost.path}'/>"
-                                                        method="post" id="jahia-forum-post-delete-${blogPost.UUID}">
-                                                        <input type="hidden" name="jcrRedirectTo"
-                                                            value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>" />
-                                                        <%-- Define the output format for the newly created node by default html or by redirectTo--%>
-                                                        <input type="hidden" name="jcrNewNodeOutputFormat" value="" />
-                                                        <input type="hidden" name="jcrMethodToCall" value="delete" />
-                                                    </form>
-                                                </template:tokenizedForm>
-                              					<fmt:message key="moderateMessages.confirmDeletePost" var="confirmMsg" />
-                              					<button type="button" class="btn btn-danger"
-                              						onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
-                                                        { document.getElementById("jahia-forum-post-delete-${blogPost.UUID}").submit(); } return false;'>
-                                                    <i class="icon-remove icon-white"></i><fmt:message key='moderateMessages.deletePost' />
-
-                              					</button>
-                              				</c:if>
-
-                              				<button type="button"
-                              					class="btn btn-primary btn-${blogPost.UUID}"
-                              					id="btn-${blogPost.UUID}" data-toggle="modal" data-target="#${blogPost.UUID}">
-                                                <i class="icon-info-sign icon-white"></i><span><fmt:message key="moderateMessages.viewPost" /></span>
-
-                              				</button></td>
-
-                              		</tr>
-                                <div class="modal fade" id="${blogPost.UUID}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                             <h3 class="modal-title" id="myModalLabel">${commentTitle.string} </h3> <i>(<fmt:message key="moderateMessages.table.postby" />&nbsp;${firstname}&nbsp;${lastname})</i>
-                            <h4 class="modal-title" id="myModalLabel">
-                              Blog: <c:out value="${sectionTitle.string}" />	
-                             </h4>
-                          </div>
-                          <div class="modal-body">
-                           ${functions:removeHtmlTags(content.string)}
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-danger"
-                             onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
-                             { document.getElementById("jahia-forum-post-delete-${blogPost.UUID}").submit(); } return false;'>
-                             <i class="icon-remove icon-white"></i><fmt:message key='moderateMessages.deletePost' />
-
-                            </button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                           
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                              		
-
-                              </c:if>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                         	</c:when>
-                         	<c:otherwise>
-                         		<h3 class="noPostsToModerate">
-                         			<fmt:message key="moderateMessages.noPostToModerate" />
-                         		</h3>
-                         	</c:otherwise>
-                         </c:choose>
-                     </div>
