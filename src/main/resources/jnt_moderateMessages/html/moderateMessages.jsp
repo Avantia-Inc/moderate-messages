@@ -261,23 +261,6 @@ $(document).ready(function() {
                       	<jcr:nodeProperty node="${commentPost}" name="jcr:createdBy" var="createdBy" />
                         <jcr:nodeProperty node="${commentPost}" name="content" var="content" />
 
-                   
-
-                      		<template:tokenizedForm>
-                      			<form
-                      				action="<c:url value='${url.baseLive}${commentPost.path}'/>"
-                      				method="post" id="jahia-forum-post-delete-${commentPost.UUID}">
-                      				<input type="hidden" name="jcrRedirectTo"
-                      					value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>" />
-                      				<%-- Define the output format for the newly created node by default html or by redirectTo--%>
-                      				<input type="hidden" name="jcrNewNodeOutputFormat" value="" />
-                      				<input type="hidden" name="jcrMethodToCall" value="delete" />
-                      			</form>
-                      		</template:tokenizedForm>
-
-
-
-
 
                       		<tr>
 
@@ -322,6 +305,17 @@ $(document).ready(function() {
                       				</c:if>
 
                       			</span></td>
+                      			<template:tokenizedForm>
+                                    <form
+                                        action="<c:url value='${url.baseLive}${commentPost.path}'/>"
+                                        method="post" id="jahia-forum-post-delete-${commentPost.UUID}">
+                                        <input type="hidden" name="jcrRedirectTo"
+                                            value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>" />
+                                        <%-- Define the output format for the newly created node by default html or by redirectTo--%>
+                                        <input type="hidden" name="jcrNewNodeOutputFormat" value="" />
+                                        <input type="hidden" name="jcrMethodToCall" value="delete" />
+                                    </form>
+                                </template:tokenizedForm>
                       			<td>
                       			    <c:if test="${jcr:hasPermission(commentPost, 'deletePost')}">
                       					<fmt:message key="moderateMessages.confirmDeletePost" var="confirmMsg" />
@@ -355,6 +349,15 @@ $(document).ready(function() {
                            ${functions:removeHtmlTags(content.string)}
                           </div>
                           <div class="modal-footer">
+                            <c:if test="${jcr:hasPermission(commentPost, 'deletePost')}">
+                                <fmt:message key="moderateMessages.confirmDeletePost" var="confirmMsg" />
+                                <button type="button" class="btn btn-danger"
+                                    onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
+                                    { document.getElementById("jahia-forum-post-delete-${commentPost.UUID}").submit(); } return false;'>
+                                    <i class="icon-remove icon-white"></i><fmt:message key='moderateMessages.deletePost' />
+
+                                </button>
+                            </c:if>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                            
                           </div>
