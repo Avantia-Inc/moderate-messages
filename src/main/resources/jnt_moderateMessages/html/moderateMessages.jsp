@@ -57,8 +57,7 @@
 		<fmt:message key="siteSettings.label.moderateForumMessages" />
 	</h3>
 
-	<c:choose>
-		<c:when test="${not empty forumPostlist}">
+		<c:if test="${not empty forumPostlist}">
 
 			<table id="forumMessagesTable"
 				class="table table-bordered table-striped table-hover display data-table">
@@ -259,13 +258,12 @@
 					</c:forEach>
 				</tbody>
 			</table>
-		</c:when>
-		<c:otherwise>
-			<h3 class="noPostsToModerate">
-				<fmt:message key="moderateMessages.noPostToModerate" />
-			</h3>
-		</c:otherwise>
-	</c:choose>
+		</c:if>
+                <c:if test="${empty forumPostlist}">
+                     <div class="alert alert-info">
+                      <h2><fmt:message key='moderateMessages.noPostToModerate' /></h2>
+                     </div>
+                </c:if>
 </div>
 
 
@@ -274,8 +272,8 @@
 	<h3>
 		<fmt:message key="siteSettings.label.moderateBlogMessages" />
 	</h3>
-	<c:choose>
-		<c:when test="${not empty blogPostlist}">
+
+		<c:if test="${not empty blogPostlist}">
 			<table id="blogPostTable"
 				class="table table-bordered table-striped table-hover  data-table">
 				<thead>
@@ -435,13 +433,13 @@
 					</c:forEach>
 				</tbody>
 			</table>
-		</c:when>
-		<c:otherwise>
-			<h3 class="noPostsToModerate">
-				<fmt:message key="moderateMessages.noPostToModerate" />
-			</h3>
-		</c:otherwise>
-	</c:choose>
+		</c:if>
+        <c:if test="${empty blogPostlist}">
+             <div class="alert alert-info">
+              <h2><fmt:message key='moderateMessages.noPostToModerate' /></h2>
+             </div>
+        </c:if>
+
 </div>
 
 
@@ -452,6 +450,8 @@
 	<h3>
 		<fmt:message key="siteSettings.label.moderateCommentMessages" />
 	</h3>
+
+<c:if test="${not empty CommentPostlist}">
 
 	<table id="commentPostTable"
 		class="table table-bordered table-striped table-hover  data-table">
@@ -616,7 +616,12 @@
 			</c:forEach>
 		</tbody>
 	</table>
-
+</c:if>
+<c:if test="${empty CommentPostlist}">
+     <div class="alert alert-info">
+      <h2><fmt:message key='moderateMessages.noPostToModerate' /></h2>
+     </div>
+</c:if>
 </div>
 
 

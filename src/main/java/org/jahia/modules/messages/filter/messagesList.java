@@ -60,7 +60,7 @@ public class messagesList extends AbstractFilter {
                     if (nodeWrapper.getParent().getName().contentEquals("comments") && nodeWrapper.getParent().getParent().isNodeType("jnt:page")) {
                         CommentPostlist.add(nodeWrapper);
                     }
-                    if (nodeWrapper.isNodeType("jmix:moderated")) {
+                    if (nodeWrapper.isNodeType("jmix:moderated") && !(nodeWrapper.hasProperty("moderated"))) {
                         forumPostlist.add(nodeWrapper);
                     }
                     if (nodeWrapper.getParent().getParent().isNodeType("jnt:blogPost")) {
