@@ -41,12 +41,12 @@ public class messagesList extends AbstractFilter {
 
         // Get SitePath to execute query from it
         String sitePath = renderContext.getMainResource().getNode().getPath().toString();
-      
+
         final List<JCRNodeWrapper> forumPostlist = new ArrayList<JCRNodeWrapper>();
         final List<JCRNodeWrapper> CommentPostlist = new ArrayList<JCRNodeWrapper>();
         final List<JCRNodeWrapper> blogPostlist = new ArrayList<JCRNodeWrapper>();
 
-        logger.info("Query site "+sitePath+" to retrieve all posts");
+        logger.info("Query site " + sitePath + " to retrieve all posts");
         try {
             QueryManager qm = getSession().getWorkspace().getQueryManager();
             StringBuilder statement = new StringBuilder("select * from [jnt:post] as post where ISDESCENDANTNODE(post,'" + sitePath + "')  order by post.['jcr:created'] desc");
