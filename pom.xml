@@ -110,7 +110,7 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Jahia-Depends>default,siteSettings</Jahia-Depends>
+            <Jahia-Depends>default,bootstrap-components,grid,siteSettings</Jahia-Depends>
           </instructions>
         </configuration>
       </plugin>

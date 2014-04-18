@@ -2,3 +2,5 @@
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
 
 [jnt:moderateMessages] > jnt:content, mix:title, jmix:studioOnly, jmix:siteComponent, jmix:list
+  
+[jnt:viewAllMessages] > jnt:content, mix:title, jmix:studioOnly, jmix:siteComponent, jmix:list

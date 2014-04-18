@@ -45,6 +45,7 @@ public class messagesList extends AbstractFilter {
         final List<JCRNodeWrapper> forumPostlist = new ArrayList<JCRNodeWrapper>();
         final List<JCRNodeWrapper> CommentPostlist = new ArrayList<JCRNodeWrapper>();
         final List<JCRNodeWrapper> blogPostlist = new ArrayList<JCRNodeWrapper>();
+        final List<JCRNodeWrapper> allPostlist = new ArrayList<JCRNodeWrapper>();
 
         logger.info("Query site " + sitePath + " to retrieve all posts");
         try {
@@ -57,14 +58,22 @@ public class messagesList extends AbstractFilter {
             while (ni.hasNext()) {
                 JCRNodeWrapper nodeWrapper = (JCRNodeWrapper) ni.next();
                 if (nodeWrapper.isNodeType("jnt:post")) {
-                    if (nodeWrapper.getParent().getName().contentEquals("comments") && nodeWrapper.getParent().getParent().isNodeType("jnt:page")) {
+                    if (nodeWrapper.isNodeType("jmix:moderated") && (nodeWrapper.hasProperty("moderated"))) {
+
+                        allPostlist.add(nodeWrapper);
+                        logger.info("adding allPostlist");
+                    }
+                    if (nodeWrapper.getParent().getName().contentEquals("comments") && nodeWrapper.getParent().getParent().isNodeType("jnt:page") && !(nodeWrapper.hasProperty("moderated"))) {
                         CommentPostlist.add(nodeWrapper);
+                        logger.info("adding CommentPostlist");
                     }
-                    if (nodeWrapper.isNodeType("jmix:moderated") && !(nodeWrapper.hasProperty("moderated"))) {
+                    if (nodeWrapper.getParent().isNodeType("jnt:topic") && !(nodeWrapper.hasProperty("moderated"))) {
                         forumPostlist.add(nodeWrapper);
+                        logger.info("adding forumPostlist");
                     }
-                    if (nodeWrapper.getParent().getParent().isNodeType("jnt:blogPost")) {
+                    if (nodeWrapper.getParent().getParent().isNodeType("jnt:blogPost") && !(nodeWrapper.hasProperty("moderated"))) {
                         blogPostlist.add(nodeWrapper);
+                        logger.info("adding blogPostlist");
                     }
                 }
             }
@@ -74,6 +83,7 @@ public class messagesList extends AbstractFilter {
             request.setAttribute("forumPostlist", forumPostlist);
             request.setAttribute("CommentPostlist", CommentPostlist);
             request.setAttribute("blogPostlist", blogPostlist);
+            request.setAttribute("allPostlist", allPostlist);
 
         } catch (RepositoryException e) {
             logger.error("Missing information for Post list Retrieval");

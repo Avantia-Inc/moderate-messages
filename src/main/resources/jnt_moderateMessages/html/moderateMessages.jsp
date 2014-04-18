@@ -51,7 +51,7 @@
 	<fmt:message key="siteSettings.label.moderateMessages" />
 	- ${fn:escapeXml(site.displayableName)}
 </h2>
-
+ <c:set var="count" value="0" scope="page" />
 <div class="box-1">
 	<h3>
 		<fmt:message key="siteSettings.label.moderateForumMessages" />
@@ -105,10 +105,10 @@
 										<c:out value="${count}" /></td>
 									<td><a href="${url.baseLive}${forumPost.parent.path}.html"
 										target="_blank"
-										title='<fmt:message key=" label.navigateTo "/>'> <c:out
+										title='<fmt:message key=" label.navigateTo "/>' class="postTitle"> <c:out
 												value="${commentTitle.string}" />
-									</a> <br /> <i>Section: <c:out value="${sectionTitle.string}" />
-											/ Topic: <c:out value="${topicSubject.string}" /></i> <br /></td>
+									</a> <br /> <i><b>Section:</b> <c:out value="${sectionTitle.string}" />
+											<br/><b>Topic:</b> <c:out value="${topicSubject.string}" /></i> <br /></td>
 									<jcr:nodeProperty node="${forumPost}" name="jcr:lastModified"
 										var="lastModified" />
 									<td><span class="docspacedate timestamp"><fmt:formatDate
@@ -316,9 +316,9 @@
 									<c:out value="${count}" /></td>
 								<td><a
 									href="${url.baseLive}${blogPost.parent.parent.path}.html"
-									target="_blank" title='<fmt:message key=" label.navigateTo "/>'>
+									target="_blank" title='<fmt:message key=" label.navigateTo "/>'  class="postTitle">
 										<c:out value="${commentTitle.string}" />
-								</a> <br /> <i>Blog: <c:out value="${sectionTitle.string}" /></i>
+								</a>  <br /><i><b>Blog:</b> <c:out value="${sectionTitle.string}" /></i>
 									<br /></td>
 								<jcr:nodeProperty node="${blogPost}" name="jcr:lastModified"
 									var="lastModified" />
@@ -356,6 +356,19 @@
 								</span></td>
 								<td><c:if
 										test="${jcr:hasPermission(blogPost, 'deletePost')}">
+
+										<template:tokenizedForm>
+                                            <form action="<c:url value='${url.baseLive}${blogPost.path}'/>" method="post"
+                                                  id="jahia-forum-post-moderate-${blogPost.identifier}">
+                                                <input type="hidden" name="jcrRedirectTo"
+                                                       value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>"/>
+                                                    <%-- Define the output format for the newly created node by default html or by redirectTo--%>
+                                                <input type="hidden" name="jcrNewNodeOutputFormat" value="html"/>
+                                                <input type="hidden" name="jcrMethodToCall" value="put"/>
+                                                <input type="hidden" name="jcr:mixinTypes" value="jmix:moderated"/>
+                                            </form>
+                                        </template:tokenizedForm>
+
 										<template:tokenizedForm>
 											<form
 												action="<c:url value='${url.baseLive}${blogPost.path}'/>"
@@ -367,6 +380,18 @@
 												<input type="hidden" name="jcrMethodToCall" value="delete" />
 											</form>
 										</template:tokenizedForm>
+
+
+
+                                            <fmt:message key="moderateMessages.moderatePost"
+                                                var="confirmMsg" />
+                                            <button type="button" class="btn btn-success"
+                                                onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
+                                  { document.getElementById("jahia-forum-post-moderate-${blogPost.UUID}").submit();} return false;'>
+                                                <i class="icon-remove icon-white"></i>
+                                                <fmt:message key='moderateMessages.moderatePost' />
+                                            </button>
+
 										<fmt:message key="moderateMessages.confirmDeletePost"
 											var="confirmMsg" />
 										<button type="button" class="btn btn-danger"
@@ -413,6 +438,15 @@
 										<div class="modal-body">
 											${functions:removeHtmlTags(content.string)}</div>
 										<div class="modal-footer">
+										<fmt:message key="moderateMessages.moderatePost"
+                                                var="confirmMsg" />
+                                            <button type="button" class="btn btn-success"
+                                                onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
+                                  { document.getElementById("jahia-forum-post-moderate-${blogPost.UUID}").submit();} return false;'>
+                                                <i class="icon-remove icon-white"></i>
+                                                <fmt:message key='moderateMessages.moderatePost' />
+                                            </button>
+
 											<button type="button" class="btn btn-danger"
 												onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
                              { document.getElementById("jahia-forum-post-delete-${blogPost.UUID}").submit(); } return false;'>
@@ -495,9 +529,9 @@
 							<c:out value="${count}" /></td>
 						<td><a
 							href="${url.baseLive}${commentPost.parent.parent.path}.html"
-							target="_blank" title='<fmt:message key=" label.navigateTo "/>'>
+							target="_blank" title='<fmt:message key=" label.navigateTo "/>' class="postTitle">
 								<c:out value="${commentTitle.string}" />
-						</a> <br /> <i>Page: <c:out value="${sectionTitle.string}" /></i> <br /></td>
+						</a> <br /> <i><b>Page:</b> <c:out value="${sectionTitle.string}" /></i> <br /></td>
 						<jcr:nodeProperty node="${commentPost}" name="jcr:lastModified"
 							var="lastModified" />
 						<td><span class="docspacedate timestamp"> <fmt:formatDate
@@ -545,8 +579,31 @@
 								<input type="hidden" name="jcrMethodToCall" value="delete" />
 							</form>
 						</template:tokenizedForm>
+                     
+                        <template:tokenizedForm>
+                            <form action="<c:url value='${url.baseLive}${commentPost.path}'/>" method="post"
+                                  id="jahia-forum-post-moderate-${commentPost.identifier}">
+                                <input type="hidden" name="jcrRedirectTo"
+                                       value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>"/>
+                                    <%-- Define the output format for the newly created node by default html or by redirectTo--%>
+                                <input type="hidden" name="jcrNewNodeOutputFormat" value="html"/>
+                                <input type="hidden" name="jcrMethodToCall" value="put"/>
+                                <input type="hidden" name="jcr:mixinTypes" value="jmix:moderated"/>
+                            </form>
+                        </template:tokenizedForm>
+                  
 						<td><c:if
 								test="${jcr:hasPermission(commentPost, 'deletePost')}">
+
+								<fmt:message key="moderateMessages.moderatePost"
+                                    var="confirmMsg" />
+                                <button type="button" class="btn btn-success"
+                                    onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
+                      { document.getElementById("jahia-forum-post-moderate-${commentPost.UUID}").submit();} return false;'>
+                                    <i class="icon-remove icon-white"></i>
+                                    <fmt:message key='moderateMessages.moderatePost' />
+                                </button>
+
 								<fmt:message key="moderateMessages.confirmDeletePost"
 									var="confirmMsg" />
 								<button type="button" class="btn btn-danger"
@@ -554,7 +611,6 @@
                       { document.getElementById("jahia-forum-post-delete-${commentPost.UUID}").submit(); } return false;'>
 									<i class="icon-remove icon-white"></i>
 									<fmt:message key='moderateMessages.deletePost' />
-
 								</button>
 							</c:if>
 
@@ -594,6 +650,15 @@
 									${functions:removeHtmlTags(content.string)}</div>
 								<div class="modal-footer">
 									<c:if test="${jcr:hasPermission(commentPost, 'deletePost')}">
+									<fmt:message key="moderateMessages.moderatePost"
+                                        var="confirmMsg" />
+                                    <button type="button" class="btn btn-success"
+                                        onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
+                          { document.getElementById("jahia-forum-post-moderate-${commentPost.UUID}").submit();} return false;'>
+                                        <i class="icon-remove icon-white"></i>
+                                        <fmt:message key='moderateMessages.moderatePost' />
+                                    </button>
+
 										<fmt:message key="moderateMessages.confirmDeletePost"
 											var="confirmMsg" />
 										<button type="button" class="btn btn-danger"

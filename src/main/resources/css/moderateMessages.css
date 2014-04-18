@@ -7,7 +7,9 @@
 
   display: block;
 }
-
+.postTitle {
+font-size:14px ;
+}
 .noPostsToModerate {
     background: #eee;
     border-radius: 2em;
