@@ -19,9 +19,9 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
-<template:addResources type="css" resources="moderateMessages.css,dt_bootstrap.css" />
+<template:addResources type="css" resources="moderateMessages.css" />
 <template:addResources type="javascript"
-	resources="jquery.min.js,jquery-ui.min.js,jquery.blockUI.js,workInProgress.js,admin-bootstrap.js,jquery.dataTables.min.js,dt_bootstrap.js" />
+	resources="jquery.min.js,jquery-ui.min.js,jquery.blockUI.js,workInProgress.js,admin-bootstrap.js,jquery.dataTables.min.js" />
 <template:addResources type="css"
 	resources="admin-bootstrap.css,bootstrap.min.css" />
 <template:addResources type="css"
