@@ -43,18 +43,22 @@
                                 <bootstrap-tabular-list fadeIn="true"
                                              jcr:primaryType="jnt:bootstrapTabularList"
                                              tabsPosition="top">
-                                    <moderate-messages jcr:primaryType="jnt:contentList">
+                                    <moderer-les-derniers-messages jcr:primaryType="jnt:contentList">
                                         <j:translation_en jcr:language="en"
                                              jcr:mixinTypes="mix:title"
                                              jcr:primaryType="jnt:translation"
-                                             jcr:title="Moderate Messages"/>
+                                             jcr:title="Moderate latest posts"/>
                                         <moderate-messages jcr:primaryType="jnt:moderateMessages">
                                             <j:translation_en jcr:language="en"
                                                 jcr:mixinTypes="mix:title"
                                                 jcr:primaryType="jnt:translation"
                                                 jcr:title="Moderate Messages"/>
                                     </moderate-messages>
-                                    </moderate-messages>
+                                        <j:translation_fr jcr:language="fr"
+                                             jcr:mixinTypes="mix:title"
+                                             jcr:primaryType="jnt:translation"
+                                             jcr:title="Moderer les derniers messages"/>
+                                    </moderer-les-derniers-messages>
                                     <view-all-validated-messages jcr:primaryType="jnt:contentList">
                                         <j:translation_en jcr:language="en"
                                              jcr:mixinTypes="mix:title"
@@ -66,6 +70,10 @@
                                                 jcr:primaryType="jnt:translation"
                                                 jcr:title="View all Validated Messages"/>
                                     </view-all-validated-messages>
+                                        <j:translation_fr jcr:language="fr"
+                                             jcr:mixinTypes="mix:title"
+                                             jcr:primaryType="jnt:translation"
+                                             jcr:title="Voir tous les messages validés"/>
                                     </view-all-validated-messages>
                                 </bootstrap-tabular-list>
                             </pagecontent>

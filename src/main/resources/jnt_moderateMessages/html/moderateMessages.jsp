@@ -19,13 +19,9 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
-<template:addResources type="css" resources="moderateMessages.css" />
-<template:addResources type="javascript"
-	resources="jquery.min.js,jquery-ui.min.js,jquery.blockUI.js,workInProgress.js,admin-bootstrap.js,jquery.dataTables.min.js" />
-<template:addResources type="css"
-	resources="admin-bootstrap.css,bootstrap.min.css" />
-<template:addResources type="css"
-	resources="jquery-ui.smoothness.css,jquery-ui.smoothness-jahia.css" />
+<template:addResources type="javascript" resources="jquery.min.js,jquery-ui.min.js,admin-bootstrap.js,bootstrap-filestyle.min.js,jquery.metadata.js,jquery.tablesorter.js,jquery.tablecloth.js"/>
+<template:addResources type="css" resources="jquery-ui.smoothness.css,jquery-ui.smoothness-jahia.css,tablecloth.css"/>
+<template:addResources type="javascript" resources="datatables/jquery.dataTables.js,i18n/jquery.dataTables-${currentResource.locale}.js,datatables/dataTables.bootstrap-ext.js"/>
 
 <script>
 
@@ -36,10 +32,10 @@
 					function() {
 
 						$('.data-table').dataTable({
-                            "sDom" : "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                            "aLengthMenu": [[5, 10, 50, 100, -1], [5, 10, 50, 100, 'All']],
-                         	"sPaginationType": "full_numbers",
-                            "iDisplayLength" : 5
+                            "sDom": "<'row-fluid'<'span6'l><'span6 text-right'f>r>t<'row-fluid'<'span6'i><'span6 text-right'p>>",
+                                        "iDisplayLength": 5,
+                                        "sPaginationType": "bootstrap",
+                                        "aaSorting": [] //this option disable sort by default, the user steal can use column names to sort the table
                         });
 
 					});
@@ -103,7 +99,7 @@
 
 									<td><c:set var="count" value="${count + 1}" scope="page" />
 										<c:out value="${count}" /></td>
-									<td><a href="${url.baseLive}${forumPost.parent.path}.html"
+									<td><a href="<c:url value='${url.baseLive}${forumPost.parent.path}.html'/>"
 										target="_blank"
 										title='<fmt:message key=" label.navigateTo "/>' class="postTitle"> <c:out
 												value="${commentTitle.string}" />
@@ -315,7 +311,7 @@
 								<td><c:set var="count" value="${count + 1}" scope="page" />
 									<c:out value="${count}" /></td>
 								<td><a
-									href="${url.baseLive}${blogPost.parent.parent.path}.html"
+									href="<c:url value='${url.baseLive}${blogPost.parent.parent.path}.html'/>"
 									target="_blank" title='<fmt:message key=" label.navigateTo "/>'  class="postTitle">
 										<c:out value="${commentTitle.string}" />
 								</a>  <br /><i><b>Blog:</b> <c:out value="${sectionTitle.string}" /></i>
@@ -363,9 +359,10 @@
                                                 <input type="hidden" name="jcrRedirectTo"
                                                        value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>"/>
                                                     <%-- Define the output format for the newly created node by default html or by redirectTo--%>
-                                                <input type="hidden" name="jcrNewNodeOutputFormat" value="html"/>
+                                                <input type="hidden" name="jcrNewNodeOutputFormat" value=""/>
                                                 <input type="hidden" name="jcrMethodToCall" value="put"/>
                                                 <input type="hidden" name="jcr:mixinTypes" value="jmix:moderated"/>
+                                                <input type="hidden" name="moderated" value="true" />
                                             </form>
                                         </template:tokenizedForm>
 
@@ -528,7 +525,7 @@
 						<td><c:set var="count" value="${count + 1}" scope="page" />
 							<c:out value="${count}" /></td>
 						<td><a
-							href="${url.baseLive}${commentPost.parent.parent.path}.html"
+							href="<c:url value='${url.baseLive}${commentPost.parent.parent.path}.html'/>"
 							target="_blank" title='<fmt:message key=" label.navigateTo "/>' class="postTitle">
 								<c:out value="${commentTitle.string}" />
 						</a> <br /> <i><b>Page:</b> <c:out value="${sectionTitle.string}" /></i> <br /></td>
@@ -586,9 +583,10 @@
                                 <input type="hidden" name="jcrRedirectTo"
                                        value="<c:url value='/cms/editframe/default/${currentResource.locale}${renderContext.mainResource.path}'/>"/>
                                     <%-- Define the output format for the newly created node by default html or by redirectTo--%>
-                                <input type="hidden" name="jcrNewNodeOutputFormat" value="html"/>
+                                <input type="hidden" name="jcrNewNodeOutputFormat" value=""/>
                                 <input type="hidden" name="jcrMethodToCall" value="put"/>
                                 <input type="hidden" name="jcr:mixinTypes" value="jmix:moderated"/>
+                                <input type="hidden" name="moderated" value="true" />
                             </form>
                         </template:tokenizedForm>
                   

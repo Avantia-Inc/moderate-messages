@@ -19,14 +19,9 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
-<template:addResources type="css" resources="moderateMessages.css,dt_bootstrap.css" />
-<template:addResources type="javascript"
-	resources="jquery.min.js,jquery-ui.min.js,jquery.blockUI.js,workInProgress.js,admin-bootstrap.js,jquery.dataTables.min.js,dt_bootstrap.js" />
-<template:addResources type="css"
-	resources="admin-bootstrap.css,bootstrap.min.css" />
-<template:addResources type="css"
-	resources="jquery-ui.smoothness.css,jquery-ui.smoothness-jahia.css" />
-
+<template:addResources type="javascript" resources="jquery.min.js,jquery-ui.min.js,admin-bootstrap.js,bootstrap-filestyle.min.js,jquery.metadata.js,jquery.tablesorter.js,jquery.tablecloth.js"/>
+<template:addResources type="css" resources="jquery-ui.smoothness.css,jquery-ui.smoothness-jahia.css,tablecloth.css"/>
+<template:addResources type="javascript" resources="datatables/jquery.dataTables.js,i18n/jquery.dataTables-${currentResource.locale}.js,datatables/dataTables.bootstrap-ext.js"/>
 
 
 <c:set var="site" value="${renderContext.mainResource.node.resolveSite}" />
@@ -94,7 +89,7 @@
 								        <c:if test="${jcr:isNodeType(loneMsg.parent.parent, 'jnt:page') and (loneMsg.parent.name == 'comments')}">  Comment </c:if>
 								        <c:if test="${jcr:isNodeType(loneMsg.parent, 'jnt:topic') and (loneMsg.parent.name != 'comments')}">  Forum </c:if>
 								    </td>
-									<td><a href="${url.baseLive}${loneMsg.parent.path}.html"
+									<td><a href="<c:url value='${url.baseLive}${loneMsg.parent.path}.html'/>"
 										target="_blank"
 										title='<fmt:message key=" label.navigateTo "/>' class="postTitle"> <c:out
 												value="${commentTitle.string}" />

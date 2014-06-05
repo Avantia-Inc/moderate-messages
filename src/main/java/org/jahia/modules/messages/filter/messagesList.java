@@ -61,19 +61,19 @@ public class messagesList extends AbstractFilter {
                     if (nodeWrapper.isNodeType("jmix:moderated") && (nodeWrapper.hasProperty("moderated"))) {
 
                         allPostlist.add(nodeWrapper);
-                        logger.info("adding allPostlist");
+                      logger.info("adding allPostlist: "+nodeWrapper.getDisplayableName());
                     }
                     if (nodeWrapper.getParent().getName().contentEquals("comments") && nodeWrapper.getParent().getParent().isNodeType("jnt:page") && !(nodeWrapper.hasProperty("moderated"))) {
                         CommentPostlist.add(nodeWrapper);
-                        logger.info("adding CommentPostlist");
+                        logger.info("adding CommentPostlist: "+nodeWrapper.getDisplayableName());
                     }
-                    if (nodeWrapper.getParent().isNodeType("jnt:topic") && !(nodeWrapper.hasProperty("moderated"))) {
+                    if (nodeWrapper.getParent().isNodeType("jnt:topic") && !(nodeWrapper.hasProperty("moderated")) && !(nodeWrapper.getParent().getName().contentEquals("comments"))) {
                         forumPostlist.add(nodeWrapper);
-                        logger.info("adding forumPostlist");
+                        logger.info("adding forumPostlist: "+nodeWrapper.getDisplayableName());
                     }
                     if (nodeWrapper.getParent().getParent().isNodeType("jnt:blogPost") && !(nodeWrapper.hasProperty("moderated"))) {
                         blogPostlist.add(nodeWrapper);
-                        logger.info("adding blogPostlist");
+                        logger.info("adding blogPostlist: "+nodeWrapper.getDisplayableName());
                     }
                 }
             }
