@@ -79,14 +79,14 @@
   </parent>
   <groupId>org.jahia.modules</groupId>
   <artifactId>moderate-messages</artifactId>
-  <version>1.0</version>
+  <version>1.1-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Moderate Messages</name>
   <description>This is the custom module (Moderate Messages) for running on a Digital Factory server.</description>
   <scm>
     <connection>scm:git:git@github.com:smonier/moderate-messages.git</connection>
     <developerConnection>scm:git:git@github.com:smonier/moderate-messages.git</developerConnection>
-    <tag>1_0</tag>
+    <tag>HEAD</tag>
   </scm>
   <distributionManagement>
     <repository>
