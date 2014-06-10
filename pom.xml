@@ -88,6 +88,15 @@
     <connection>scm:git:git@github.com:smonier/moderate-messages.git</connection>
     <developerConnection>scm:git:git@github.com:smonier/moderate-messages.git</developerConnection>
   </scm>
+  <distributionManagement>
+    <repository>
+      <id>jahia-public-app-store</id>
+      <url>http://store.jahia.com/nexus/content/repositories/jahia-public-app-store</url>
+    </repository>
+  </distributionManagement>
+  <properties>
+    <jahia-private-app-store>http://store.jahia.com/cms/render/live/en/sites/private-app-store</jahia-private-app-store>
+  </properties>
   <repositories>
     <repository>
       <releases>
