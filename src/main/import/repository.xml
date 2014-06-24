@@ -38,6 +38,7 @@
                                       j:defaultTemplate="false"
                                       j:hiddenTemplate="false"
                                  j:icon="/modules/moderate-messages/templates/files/message_ok-resize16x16.png"
+                                  j:requiredPermissionNames="adminSiteSettingsModerateMessages"
                                  jcr:primaryType="jnt:contentTemplate">
                             <pagecontent jcr:primaryType="jnt:contentList">
                                 <bootstrap-tabular-list fadeIn="true"
