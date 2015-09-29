@@ -59,11 +59,10 @@ public class messagesList extends AbstractFilter {
                 JCRNodeWrapper nodeWrapper = (JCRNodeWrapper) ni.next();
                 if (nodeWrapper.isNodeType("jnt:post")) {
                     if (nodeWrapper.isNodeType("jmix:moderated") && (nodeWrapper.hasProperty("moderated"))) {
-
                         allPostlist.add(nodeWrapper);
                       logger.info("adding allPostlist: "+nodeWrapper.getDisplayableName());
                     }
-                    if (nodeWrapper.getParent().getName().contentEquals("comments") && nodeWrapper.getParent().getParent().isNodeType("jnt:page") && !(nodeWrapper.hasProperty("moderated"))) {
+                    if (nodeWrapper.getParent().getName().contentEquals("comments") && !(nodeWrapper.hasProperty("moderated"))) {
                         CommentPostlist.add(nodeWrapper);
                         logger.info("adding CommentPostlist: "+nodeWrapper.getDisplayableName());
                     }
