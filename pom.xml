@@ -80,7 +80,7 @@
   </parent>
   <groupId>org.jahia.modules</groupId>
   <artifactId>moderate-messages</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.2-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Moderate Messages</name>
   <description>This is the custom module (Moderate Messages) for running on a Digital Factory server.</description>
