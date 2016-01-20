@@ -7,15 +7,16 @@
     <artifactId>jahia-modules</artifactId>
     <version>7.1.0.0</version>
   </parent>
-  <groupId>org.jahia.modules</groupId>
   <artifactId>moderate-messages</artifactId>
-  <version>2.0-SNAPSHOT</version>
+  <version>1.2-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Moderate Messages</name>
   <description>This is the custom module (Moderate Messages) for running on a Digital Factory server.</description>
   <scm>
-    <connection>scm:git:git@github.com:smonier/moderate-messages.git</connection>
-    <developerConnection>scm:git:git@github.com:smonier/moderate-messages.git</developerConnection>
+    <connection>scm:git:git@github.com:Avantia-Inc/moderate-messages.git</connection>
+    <developerConnection>scm:git:git@github.com:Avantia-Inc/moderate-messages.git</developerConnection>
+    <tag>1.2-SNAPSHOT</tag>
+    <url>scm:git:git@github.com:Avantia-Inc/moderate-messages.git</url>
   </scm>
 
   <repositories>
