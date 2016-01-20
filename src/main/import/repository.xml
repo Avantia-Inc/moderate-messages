@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <content xmlns:j="http://www.jahia.org/jahia/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0">
     <modules jcr:primaryType="jnt:modules">
-        <moderate-messages j:dependencies="bootstrap-components default grid siteSettings"
+        <moderate-messages j:dependencies="default siteSettings tabularList"
                            j:modulePriority="0"
                            j:moduleType="module"
                            j:title="Moderate Messages"
@@ -31,7 +31,8 @@
                         </message_ok-resize16x16.png>
                     </files>
                 <contents jcr:primaryType="jnt:contentFolder"/>
-                <site-settings-base j:view="siteSettings"
+                    <site-settings-base j:view="moderateMessages"
+                                j:workInProgress="false"
                                     jcr:mixinTypes="jmix:useUILocale"
                                     jcr:primaryType="jnt:template">
                         <moderate-messages j:applyOn="jnt:virtualsite"
@@ -41,42 +42,41 @@
                                   j:requiredPermissionNames="adminSiteSettingsModerateMessages"
                                  jcr:primaryType="jnt:contentTemplate">
                             <pagecontent jcr:primaryType="jnt:contentList">
-                                <bootstrap-tabular-list fadeIn="true"
-                                             jcr:primaryType="jnt:bootstrapTabularList"
-                                             tabsPosition="top">
-                                    <moderer-les-derniers-messages jcr:primaryType="jnt:contentList">
+                                <mod-messages-tabbed-list j:view="moderateMessages"
+                                               jcr:mixinTypes="jmix:renderable"
+                                               jcr:primaryType="jnt:tabularList">
+                                    <conversations-moderation-tab jcr:primaryType="jnt:contentList">
                                         <j:translation_en jcr:language="en"
                                              jcr:mixinTypes="mix:title"
                                              jcr:primaryType="jnt:translation"
-                                             jcr:title="Moderate latest posts"/>
-                                        <moderate-messages jcr:primaryType="jnt:moderateMessages">
-                                            <j:translation_en jcr:language="en"
-                                                jcr:mixinTypes="mix:title"
-                                                jcr:primaryType="jnt:translation"
-                                                jcr:title="Moderate Messages"/>
-                                    </moderate-messages>
+                                             jcr:title="Moderation Panel"/>
                                         <j:translation_fr jcr:language="fr"
                                              jcr:mixinTypes="mix:title"
                                              jcr:primaryType="jnt:translation"
                                              jcr:title="Moderer les derniers messages"/>
-                                    </moderer-les-derniers-messages>
-                                    <view-all-validated-messages jcr:primaryType="jnt:contentList">
+                                        <conversations-moderation-panel jcr:primaryType="jnt:moderateMessages">
+                                            <j:translation_en jcr:language="en"
+                                                jcr:mixinTypes="mix:title"
+                                                jcr:primaryType="jnt:translation"/>
+                                        </conversations-moderation-panel>
+                                    </conversations-moderation-tab>
+                                    <validated-conversations-tab jcr:primaryType="jnt:contentList">
                                         <j:translation_en jcr:language="en"
                                              jcr:mixinTypes="mix:title"
                                              jcr:primaryType="jnt:translation"
-                                             jcr:title="View all validated Messages"/>
-                                        <view-all-validated-messages jcr:primaryType="jnt:viewAllMessages">
-                                            <j:translation_en jcr:language="en"
-                                                jcr:mixinTypes="mix:title"
-                                                jcr:primaryType="jnt:translation"
-                                                jcr:title="View all Validated Messages"/>
-                                    </view-all-validated-messages>
+                                             jcr:title="All Validated Conversations"/>
                                         <j:translation_fr jcr:language="fr"
                                              jcr:mixinTypes="mix:title"
                                              jcr:primaryType="jnt:translation"
                                              jcr:title="Voir tous les messages validés"/>
-                                    </view-all-validated-messages>
-                                </bootstrap-tabular-list>
+                                        <validated-conversations-panel jcr:primaryType="jnt:viewAllMessages">
+                                            <j:translation_en j:workInProgress="false"
+                                                jcr:language="en"
+                                                jcr:mixinTypes="mix:title"
+                                                jcr:primaryType="jnt:translation"/>
+                                        </validated-conversations-panel>
+                                    </validated-conversations-tab>
+                                </mod-messages-tabbed-list>
                             </pagecontent>
                             <j:translation_en jcr:language="en"
                                     jcr:mixinTypes="mix:title"
